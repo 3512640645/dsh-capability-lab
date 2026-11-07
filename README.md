@@ -30,11 +30,13 @@ docs/                               四个技能 + 能力判据（在线可读�
   control-bench.md     怎么给自己评级：L1/L2/L3 + 三层延迟口径
   video-pipeline.md    怎么用场景 JSON 出片（五步命令 + 质检指标）
   CONTROL-BENCH.md     能力判据全文（含踩坑与修订史）
-video/                              介绍片（76 秒）
-  plugin-intro-16x9.mp4 / -9x16.mp4          双画幅
-  plugin-intro-16x9-subbed.mp4               烧字幕版
+video/                              介绍片 v3（76 秒 · 音画同相）
+  plugin-intro-16x9.mp4 / -9x16.mp4          双画幅（音画同相 r=0.7533 / 0.7815）
+  plugin-intro-16x9-subbed.mp4               烧字幕版（v3 正片 + 本文 srt；r=0.369）
   plugin-intro-contact.png                   接触表（12 帧）
   plugin-intro.srt                           字幕
+  plugin-intro-v3-qa-16x9.json / -9x16.json  成片质检（r、t 检验、置换检验 2000 次）
+  VERSIONS.md                                v3 文件清单：字节 / sha256 / 复现命令
 LICENSE
 ```
 
@@ -118,6 +120,11 @@ node engine/qa.mjs --video out/plugin-intro-16x9.mp4 --expect-duration 76
 ```
 
 介绍片的实测数字：76.000s / 30fps / 2280 帧，母带 **13/13** 质检、LRA 9.5 LU，字幕 27 条覆盖 87%。
+
+**当前发布版是 v3**：音画包络**同相**，16:9 **r=0.7533**（n=151 桶 / bin=0.5s，t=13.9813，置换检验 0/2000，p_perm=0.0005）、
+9:16 **r=0.7815**（t=15.2899）；烧字幕版 10/10 通过但 r=0.369（叠字改变亮度包络，属预期）。
+被替换的 v2 是**反相**（r=-0.1278，9/10），根因是配乐落点扫描口径与交付口径不一致 —— 见 `video/VERSIONS.md`。
+v3 的 16:9 与独立重放的 v4 **字节相同**（sha256 `AC84767F…`），音频母带两跑同 sha。
 
 ---
 
